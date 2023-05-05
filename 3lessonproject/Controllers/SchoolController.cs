@@ -1,31 +1,73 @@
-﻿using _3lessonproject.Models;
+﻿using _3lessonproject.Helpers;
+using _3lessonproject.Models;
 using Classroom.Data.Context;
+using Classroom.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
-namespace _3lessonproject.Controllers
+namespace _3lessonproject.Controllers;
+
+public class SchoolController : Controller
 {
-    public class SchoolController : Controller
+    private readonly AppDbContext _context;
+
+    public SchoolController(AppDbContext context)
     {
-        private readonly AppDbContext _context;
+        _context = context;
+    }
 
-        public SchoolController(AppDbContext context)
+
+    [HttpGet]
+    public IActionResult CreateSchool()
+    {
+        return View();
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> CreateSchool([FromForm] CreateSchoolDto createSchoolDto)
+    {
+        if (!ModelState.IsValid)
         {
-            _context = context;
+            return View(createSchoolDto);
         }
 
-
-        [HttpGet]
-        public IActionResult CreateSchool()
+        var school = new School()
         {
-            return View();
+            Name = createSchoolDto.Name,
+            Description = createSchoolDto.Description
+        };
+
+        if (createSchoolDto.Photo != null)
+        {
+            school.PhotoUrl = await FileHelper.SaveSchoolFile(createSchoolDto.Photo);
         }
 
+        var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-        [HttpPost]
-        public async Task<IActionResult> CreateSchool([FromForm]CreateSchoolDto createSchoolDto)
-        {
+        school.UserSchools = new List<UserSchool>()
+{
+   new UserSchool()
+   {
+       UserId = userId,
+       Type = EUserSchool.Creater
+   }
+};
 
-            return View();
-        }
+        _context.School.Add(school);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("Index");
+    }
+
+
+    public async Task<IActionResult> Index()
+    {
+        var schools = await _context.School
+            .Include(school => school.UserSchools)
+            .ToListAsync();
+
+        return View(schools);
     }
 }

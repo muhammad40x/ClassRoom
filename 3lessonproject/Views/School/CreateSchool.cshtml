@@ -5,7 +5,7 @@
 }
 
 <h1 style="margin: auto; text-align: center">Sign In</h1>
-<form class="row g-3" style="width: 400px; margin: auto" asp-controller="Schools" asp-action="CreateSchool" method="post">
+<form class="row g-3" style="width: 400px; margin: auto" asp-controller="School" asp-action="CreateSchool" method="post">
     <div>
         <input name="Photo" class="form-control" asp-for="Photo" type="file" />
         <span class="text-danger" asp-validation-for="Photo"></span>

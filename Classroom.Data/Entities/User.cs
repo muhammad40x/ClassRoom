@@ -17,5 +17,6 @@ namespace Classroom.Data.Entities
         public List<UserSchool> UserSchools { get; set;}
         
 
+
     }
 }
