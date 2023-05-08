@@ -27,6 +27,8 @@ builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>
 
 }).AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.AddHttpContextAccessor();
+
 
 
 

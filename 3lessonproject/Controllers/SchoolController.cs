@@ -11,6 +11,8 @@ namespace _3lessonproject.Controllers;
 public class SchoolController : Controller
 {
     private readonly AppDbContext _context;
+    private readonly UserProvider _userProvider;
+
 
     public SchoolController(AppDbContext context)
     {
@@ -70,4 +72,8 @@ public class SchoolController : Controller
 
         return View(schools);
     }
+
+
+
+
 }
