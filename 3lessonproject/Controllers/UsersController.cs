@@ -1,4 +1,5 @@
-﻿using _3lessonproject.Models;
+﻿using _3lessonproject.Helpers;
+using _3lessonproject.Models;
 using Classroom.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -41,6 +42,8 @@ public class UsersController : Controller
             PhoneNumber = createUserDto.PhoneNumber,
             UserName = createUserDto.UserName,
         };
+
+        user.PhotoUrl = await FileHelper.SaveUserFile(createUserDto.Photo);
 
         var result = await _userManager.CreateAsync(user,createUserDto.Password);
 
@@ -87,5 +90,14 @@ public class UsersController : Controller
         }
 
         return RedirectToAction("Profile");
+    }
+
+
+
+    [Authorize]
+    public async Task<IActionResult> LogOut()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("SignIn");
     }
 }

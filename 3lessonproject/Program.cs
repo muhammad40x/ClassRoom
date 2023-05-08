@@ -1,4 +1,5 @@
 
+using _3lessonproject.Helpers;
 using Classroom.Data.Context;
 using Classroom.Data.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -28,6 +29,8 @@ builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>
 }).AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<UserProvider>();
 
 
 

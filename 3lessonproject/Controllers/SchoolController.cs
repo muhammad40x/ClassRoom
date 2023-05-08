@@ -14,9 +14,10 @@ public class SchoolController : Controller
     private readonly UserProvider _userProvider;
 
 
-    public SchoolController(AppDbContext context)
+    public SchoolController(AppDbContext context,UserProvider userProvider)
     {
         _context = context;
+        _userProvider = userProvider;
     }
 
 
@@ -46,13 +47,13 @@ public class SchoolController : Controller
             school.PhotoUrl = await FileHelper.SaveSchoolFile(createSchoolDto.Photo);
         }
 
-        var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+       // var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
         school.UserSchools = new List<UserSchool>()
 {
    new UserSchool()
    {
-       UserId = userId,
+       UserId = _userProvider.UserId,
        Type = EUserSchool.Creater
    }
 };
@@ -73,6 +74,39 @@ public class SchoolController : Controller
         return View(schools);
     }
 
+    public async Task<IActionResult> GetSchoolById(Guid id)
+    {
+        var school = await _context.School
+            .Include(school => school.UserSchools)
+                .ThenInclude(userSchool => userSchool.User)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        return View(school);
+    }
+
+
+    public async Task<IActionResult> JoinSchool(Guid id)
+    {
+        var school = await _context.School
+            .Include(s => s.UserSchools)
+            .ThenInclude(u => u.User)
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        var userId = _userProvider.UserId;
+        var isUserExistsInSchool = school.UserSchools.Any(u => u.User.Id == userId);
+
+        if (!isUserExistsInSchool)
+        {
+            school.UserSchools.Add(new UserSchool()
+            {
+                UserId = userId,
+                Type = EUserSchool.Student
+            });
+        }
+
+        await _context.SaveChangesAsync();
+        return RedirectToAction("GetSchoolById", new { id = school.Id });
+    }
 
 
 

@@ -1,7 +1,7 @@
 ﻿@model List<Classroom.Data.Entities.School>
 
 <h1>Schools </h1>
-<a asp-controller="School" asp-action="CreateSchool"><button class="btn btn-primary" type="button">Create School</button></a>
+<a class="btn btn-primary" asp-area="" asp-controller="School" asp-action="CreateSchool">Create</a>
 <table class="table">
     <thead>
         <tr>
@@ -9,6 +9,7 @@
             <th scope="col">Name</th>
             <th scope="col">Description</th>
             <th scope="col">Users</th>
+            <th scope="col">View</th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +22,9 @@
                 <td>@school.Name</td>
                 <td>@school.Description</td>
                 <td>@school.UserSchools?.Count</td>
+                <td>
+                    <a class="btn btn-primary" asp-action="GetSchoolById" asp-route-id="@school.Id">View</a>
+                </td>
             </tr>
         }
     </tbody>
