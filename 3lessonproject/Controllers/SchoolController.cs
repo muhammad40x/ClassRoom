@@ -108,6 +108,32 @@ public class SchoolController : Controller
         return RedirectToAction("GetSchoolById", new { id = school.Id });
     }
 
+    [HttpGet]
+    public async Task<IActionResult> UpdateSchool(Guid id)
+    {
+        var school = await _context.School
+            .FirstOrDefaultAsync(s => s.Id == id);
 
+        return View(new UpdateSchoolDto()
+        {
+            Name = school.Name,
+            Description = school.Description
+        });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateSchool(Guid id[FromForm]UpdateSchoolDto updateSchoolDto)
+    {
+        var school = await _context.School
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        school.Name = updateSchoolDto.Name;
+        school.Description = updateSchoolDto.Description;
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("GetSchoolById",new {id = school.Id });
+
+    }
 
 }
