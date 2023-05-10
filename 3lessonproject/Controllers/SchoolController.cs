@@ -122,13 +122,14 @@ public class SchoolController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> UpdateSchool(Guid id[FromForm]UpdateSchoolDto updateSchoolDto)
+    public async Task<IActionResult> UpdateSchool(Guid id,[FromForm]UpdateSchoolDto updateSchoolDto)
     {
         var school = await _context.School
             .FirstOrDefaultAsync(s => s.Id == id);
 
         school.Name = updateSchoolDto.Name;
         school.Description = updateSchoolDto.Description;
+        school.PhotoUrl = await FileHelper.SaveSchoolFile(updateSchoolDto.Photo);
 
         await _context.SaveChangesAsync();
 
