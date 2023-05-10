@@ -114,6 +114,8 @@ public class SchoolController : Controller
         var school = await _context.School
             .FirstOrDefaultAsync(s => s.Id == id);
 
+        ViewBag.Id = id;
+
         return View(new UpdateSchoolDto()
         {
             Name = school.Name,
@@ -129,12 +131,28 @@ public class SchoolController : Controller
 
         school.Name = updateSchoolDto.Name;
         school.Description = updateSchoolDto.Description;
+
+        if(updateSchoolDto.Photo != null)
         school.PhotoUrl = await FileHelper.SaveSchoolFile(updateSchoolDto.Photo);
 
         await _context.SaveChangesAsync();
 
         return RedirectToAction("GetSchoolById",new {id = school.Id });
 
+    }
+
+
+    public async Task<IActionResult> UpdateUserSchoolRole(Guid schoolId, Guid userId, EUserSchool role)
+    {
+        var userSchool = await _context.UserSchool
+            .FirstOrDefaultAsync(u => u.UserId == userId && u.SchoolId == schoolId);
+
+        if (userSchool.Type != EUserSchool.Creater && role != EUserSchool.Creater)
+            userSchool.Type = role;
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("GetSchoolById", new { id = schoolId });
     }
 
 }

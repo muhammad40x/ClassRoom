@@ -44,9 +44,9 @@
                                             @userSchool.Type
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" asp-controller="Schools" asp-action="UpdateUserSchoolRole" asp-route-userId="@userSchool.UserId" asp-route-schoolId="@Model.Id" asp-route-role="@EUserSchool.Admin">Admin</a></li>
-                                            <li><a class="dropdown-item" asp-controller="Schools" asp-action="UpdateUserSchoolRole" asp-route-userId="@userSchool.UserId" asp-route-schoolId="@Model.Id" asp-route-role="@EUserSchool.Teacher">Teacher</a></li>
-                                            <li><a class="dropdown-item" asp-controller="Schools" asp-action="UpdateUserSchoolRole" asp-route-userId="@userSchool.UserId" asp-route-schoolId="@Model.Id" asp-route-role="@EUserSchool.Student">Student</a></li>
+                                            <li><a class="dropdown-item" asp-controller="School" asp-action="UpdateUserSchoolRole" asp-route-userId="@userSchool.UserId" asp-route-schoolId="@Model.Id" asp-route-role="@EUserSchool.Admin">Admin</a></li>
+                                            <li><a class="dropdown-item" asp-controller="School" asp-action="UpdateUserSchoolRole" asp-route-userId="@userSchool.UserId" asp-route-schoolId="@Model.Id" asp-route-role="@EUserSchool.Teacher">Teacher</a></li>
+                                            <li><a class="dropdown-item" asp-controller="School" asp-action="UpdateUserSchoolRole" asp-route-userId="@userSchool.UserId" asp-route-schoolId="@Model.Id" asp-route-role="@EUserSchool.Student">Student</a></li>
                                         </ul>
                                     </div>
                                 </div>

@@ -1,5 +1,16 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using _3lessonproject.Helpers
+@using Classroom.Data.Entities
+@model Classroom.Data.Entities.School
+@inject UserProvider UserProvider
+
+
 @{
+    if (Model.UserSchools.Any(s=>s.UserId == UserProvider.UserId
+        &&(s.Type ==EUserSchool.Creater||s.Type==EUserSchool.Admin)))
+    {
+        <a class="btn btn-primary"
+        asp-controller="School"
+        asp-action="UpdateSchool"
+        asp-route-id="@Model.Id">Update</a>
+    }
 }

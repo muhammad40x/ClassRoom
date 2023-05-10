@@ -6,7 +6,8 @@
 
 
 <h1 style="margin: auto; text-align: center">Update</h1>
-<form class="row g-3" style="width: 400px; margin: auto" asp-controller="School" enctype="multipart/form-data" asp-action="UpdateSchool" method="post">
+<form class="row g-3" style="width: 400px; margin: auto" asp-controller="School"
+enctype="multipart/form-data" asp-action="UpdateSchool"asp-route-id="@ViewBag.Id" method="post">
     <div>
         <input name="Photo" class="form-control" asp-for="Photo" type="file" />
         <span class="text-danger" asp-validation-for="Photo"></span>
